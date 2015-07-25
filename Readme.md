@@ -19,6 +19,9 @@
       -h, --help        output this help information
       -l, --list      list mad-pages
 
+  Get markdown rules for mad pages with `mad markdown`. Escape asterisks `*`, underscores `_` and tags `<tag>`
+  with a backslash `\`.
+
 ## Installation
 
   Install `mad(1)` and its associated mad page.
@@ -28,10 +31,6 @@
   Uninstall both `mad(1)` and the associated mad page.
 
     $ make uninstall
-
-  Via npm:
-
-    $ npm install -g mad
 
 ## About
 
