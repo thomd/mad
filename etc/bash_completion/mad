@@ -2,6 +2,7 @@ function _mad {
   local cur pages
   cur="${COMP_WORDS[COMP_CWORD]}"
   pages="`mad -l | awk '/^    / { print substr($0, 5) }' | tr '\n' ' '`"
+  pages="$pages `find . -maxdepth 1 -type f -name '*.md' | sed 's/^.\///g' | sed 's/.md//g' | tr '\n' ' '`"
   COMPREPLY=( $(compgen -W "${pages}" -- ${cur}) )
   return 0
 }
