@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 VERSION="0.4.1"
-REMOTE=git://github.com/visionmedia/mad-pages.git
-REMOTE_MAD=git://github.com/visionmedia/mad.git
+REMOTE=https://github.com/thomd/mad-pages.git
+REMOTE_MAD=https://github.com/thomd/mad.git
 CONFIG=$(dirname $0)/../etc/mad.conf
 MAD_CONFIG=${MAD_CONFIG:-$CONFIG}
 
@@ -108,7 +108,7 @@ display_mad_usage() {
 #
 
 install_all_remote() {
-  local path=$(dirname $0)/../share/mad
+  local path=$MAD_PATH
   echo
   echo "  ... cloning repo"
   cd /tmp && rm -fr mad-pages
