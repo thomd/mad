@@ -38,6 +38,8 @@ display() {
   local page=$1
   local paths=".:$MAD_PATH:$(dirname $0)/../share/mad:/usr/share/mad"
 
+  echo
+
   for path in $paths; do
     local file=$path/$page
     local ext=$path/$page.md
@@ -45,7 +47,6 @@ display() {
     [[ -f "$ext" ]]  && display_file $ext
   done
 
-  echo
   echo "  Failed to locate '$page'"
   echo
   echo "    MAD_PATH=\"$paths\""
@@ -74,19 +75,23 @@ display_from_stdin() {
 #
 
 display_file() {
-  local heading=$(get heading)
+  local heading1=$(get heading1)
+  local heading2=$(get heading2)
   local code=$(get code)
   local strong=$(get strong)
   local em=$(get em)
+  local comment=$(get comment)
 
   < "$1" perl -pe "
-      s|^#+ *(.+)|\e[$heading\1\e[0m|g; \
+      s|^# (.+)|\e[$heading1\1\e[0m|g; \
+      s|^##+ (.+)|\e[$heading2\1\e[0m|g; \
       s|(?<!\\\)(\`)(.+?)\1|\e[$code\2\e[0m|g; \
       s|\*\*(.+?)\*\*|\e[$strong\1\e[0m|g; \
       s|__(.+?)__|\e[$strong\1\e[0m|g; \
       s|(?<!\\\)(\*)(.+?)\1|\e[$em\2\e[0m|g; \
       s|(?<!\\\)(\_)(.+?)\1|\e[$em\2\e[0m|g; \
-      s|    (.+)|    \e[$code\1\e[0m|g; \
+      s|    ([^#]+)|    \e[$code\1\e[0m|g; \
+      s|    ([^#]+)(# .*)|    \e[$code\1\e[$comment \2\e[0m|g; \
       s|(?<!\\\)<(.+?)>||g; \
       s!\\\(\*|\_|\`|\<)!\1!g;
       s|^|  |;" \
